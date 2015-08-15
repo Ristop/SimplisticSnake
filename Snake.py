@@ -1,5 +1,5 @@
 __author__ = 'Risto Pärnapuu'
-__version__ = "1.0"
+__version__ = "1.01"
 
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
@@ -31,7 +31,7 @@ length = playable_squares_y * 22 + 46
 
 pygame.init()
 gameDisplay = pygame.display.set_mode((width, length))
-pygame.display.set_caption("Snake " + __version__)
+pygame.display.set_caption("Snake ")
 
 # Sound effects
 laugh = pygame.mixer.Sound('laugh1.wav')
