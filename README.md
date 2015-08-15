@@ -2,6 +2,7 @@
 
  * Needs pygame to run
  * Written with python 3
+ * Download .exe : http://tinyurl.com/pktxoql
 
 Features
 
