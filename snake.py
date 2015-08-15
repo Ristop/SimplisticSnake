@@ -404,7 +404,7 @@ while not game_exit:  # Game loop
         rect.fill(light_gray)
         gameDisplay.blit(rect, [0, 0])
         # Kuvan vajaliku teksti ekraanile
-        txtbx.draw(gameDisplay)  # Mängija nimi
+        txtbx.draw(gameDisplay)  # Player name
 
         status_text = "Online (F2)" if network_status else "Offline (F2)"
         status_text_color = green if network_status else red
