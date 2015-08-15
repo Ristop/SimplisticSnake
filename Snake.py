@@ -228,9 +228,9 @@ def draw_worm(locations):
 
 
 # PRE_SET_VARIABLES=====================================================================================================
-gameExit = False
+game_exit = False
 food_set = False
-pause = False
+game_pause = False
 game_over = True
 game_started = False
 extra_food = False
@@ -260,12 +260,12 @@ txtbx = eztext.Input(maxlength=45, color=gray, prompt='Change name (F1): ')
 
 # MAIN_LOOP=============================================================================================================
 
-while not gameExit:  # Game loop
-    for event in pygame.event.get():  # Kõik käsud
-        # print(o, event)  # Prindime saadud käsu
+while not game_exit:  # Game loop
+    for event in pygame.event.get():
+        # print(o, event)
 
         if event.type == pygame.QUIT:
-            gameExit = True
+            game_exit = True
 
         if event.type == pygame.KEYUP:
             if (not game_started or game_over) and name_change:
@@ -281,11 +281,11 @@ while not gameExit:  # Game loop
 
             # Pause game
             if event.key == pygame.K_SPACE and not game_over and game_started:
-                if not pause:
-                    pause = True
+                if not game_pause:
+                    game_pause = True
                 else:
-                    pause = False
-            if pause:
+                    game_pause = False
+            if game_pause:
                 break
 
             # Ask for a player name if no name has been entered, don't start the game
@@ -308,9 +308,9 @@ while not gameExit:  # Game loop
                 forward_y = 0
                 worm_locations.append([box_x, box_y, 20, 20])
                 game_started = True  # Game is started, home screen is not shown
-                gameExit = False  # Game is started, game over screen is not shown
+                game_exit = False  # Game is started, game over screen is not shown
                 food_set = False  # Delete the last food
-                pause = False  # Game started and not on pause
+                game_pause = False  # Game started and not on pause
                 game_over = False  # Game is not lost
                 name_change = False
                 txtbx.set_color(gray)
@@ -498,7 +498,7 @@ while not gameExit:  # Game loop
         pygame.draw.rect(gameDisplay, light_gray, square)
 
     # Pause screen
-    if pause:
+    if game_pause:
         # Draw walls
         for j in range(len(walls)):
             pygame.draw.rect(gameDisplay, gray, walls[j])
