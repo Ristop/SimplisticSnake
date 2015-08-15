@@ -40,16 +40,18 @@ eatfood = pygame.mixer.Sound('food.wav')
 clock = pygame.time.Clock()
 
 
-# url = ('http://kodu.ut.ee/~a50871/Snake/upload.php?table=save/scoreboard1.txt&data=')
-# urllib.request.urlopen(url)
-# url = ('http://kodu.ut.ee/~a50871/Snake/upload.php?table=save/scoreboard2.5.txt&data=')
-# urllib.request.urlopen(url)
-# url = ('http://kodu.ut.ee/~a50871/Snake/upload.php?table=save/scoreboard2.txt&data=')
-# urllib.request.urlopen(url)
-# url = ('http://kodu.ut.ee/~a50871/Snake/upload.php?table=save/scoreboard5.txt&data=')
-# urllib.request.urlopen(url)
-# url = ('http://kodu.ut.ee/~a50871/Snake/upload.php?table=save/scoreboard10.txt&data=')
-# urllib.request.urlopen(url)
+# CODE TO CLEAR SCOREBOARDS=============================================================================================
+# url1 = ('http://kodu.ut.ee/~a50871/Snake/upload.php?table=save/scoreboard1.txt&data=')
+# url2 = ('http://kodu.ut.ee/~a50871/Snake/upload.php?table=save/scoreboard2.5.txt&data=')
+# url3 = ('http://kodu.ut.ee/~a50871/Snake/upload.php?table=save/scoreboard2.txt&data=')
+# url4 = ('http://kodu.ut.ee/~a50871/Snake/upload.php?table=save/scoreboard5.txt&data=')
+# url5 = ('http://kodu.ut.ee/~a50871/Snake/upload.php?table=save/scoreboard10.txt&data=')
+# urllib.request.urlopen(url1)
+# urllib.request.urlopen(url2)
+# urllib.request.urlopen(url3)
+# urllib.request.urlopen(url4)
+# urllib.request.urlopen(url5)
+
 
 # FUNCTIONS=============================================================================================================
 def check_connectivity(reference):
@@ -65,160 +67,164 @@ def generate_food(not_allowed):
         food_loc_x = 24 + 22 * randint(0, playable_squares_x - 1)
         food_loc_y = 24 + 22 * randint(0, playable_squares_y - 1)
         if [food_loc_x, food_loc_y, 20, 20] not in not_allowed:
-            break
-    return [food_loc_x, food_loc_y, 20, 20]
+            return [food_loc_x, food_loc_y, 20, 20]
 
 
-def generate_level(box_x, box_y):
-    walls = []
-    for x in range(2, box_x, 22):
-        for y in range(2, box_y, 22):
-            if x == 2 or y == 2 or y == box_y - 22 or x == box_x - 22:
-                walls.append([x, y, 20, 20])
-    return walls
+def generate_level(wall_loc_x, wall_loc_y):
+    generated_walls = []
+    for x in range(2, wall_loc_x, 22):
+        for y in range(2, wall_loc_y, 22):
+            if x == 2 or y == 2 or y == wall_loc_y - 22 or x == wall_loc_x - 22:
+                generated_walls.append([x, y, 20, 20])
+    return generated_walls
 
 
-def generate_background(box_x, box_y):
-    background = []
-    for x in range(2, box_x, 22):
-        for y in range(2, box_y, 22):
-            background.append([x, y, 20, 20])
-    return background
+def generate_background(bg_loc_x, bg_loc_y):
+    generated_background = []
+    for x in range(2, bg_loc_x, 22):
+        for y in range(2, bg_loc_y, 22):
+            generated_background.append([x, y, 20, 20])
+    return generated_background
 
 
-def save_score(score, scoreboard, speed, name):
-    if len(scoreboard) < 10:
-        scoreboard.append([score, name])
-    elif scoreboard[0][0] < score:
-        scoreboard[0] = [score, name]
+def save_score(score, old_scoreboard, current_speed, user_name):
+    if len(old_scoreboard) < 10:
+        old_scoreboard.append([score, user_name])
+    elif old_scoreboard[0][0] < score:
+        old_scoreboard[0] = [score, user_name]
     else:
-        return scoreboard
+        return old_scoreboard
 
-    scoreboard = sorted(scoreboard, key=itemgetter(0))
-    scoreboards[speeds.index(speed)] = scoreboard
+    new_scoreboard = sorted(old_scoreboard, key=itemgetter(0))
+    scoreboards[speeds.index(current_speed)] = new_scoreboard
 
     if network_status and check_connectivity('http://www.google.com/'):
         upload = ""
-        for i in range(len(scoreboard)):
-            upload += str(scoreboard[i][0]) + "-" + str(scoreboard[i][1]) + "\n"
-            #print(upload)
+
+        for k in range(len(new_scoreboard)):
+            upload += str(new_scoreboard[k][0]) + "-" + str(new_scoreboard[k][1]) + "\n"
+
         url = ('http://kodu.ut.ee/~a50871/Snake/upload.php?table=save/scoreboard' + str(
-                speed) + '.txt' + '&data=' + upload)
+            current_speed) + '.txt' + '&data=' + upload)
         url = url.replace("\n", '%0A').replace(" ", '+')
         urllib.request.urlopen(url)
     else:
-        f = open("save/scoreboard" + str(speed) + ".txt", "w")
+        f = open("save/scoreboard" + str(current_speed) + ".txt", "w")
 
-        for i in range(len(scoreboard)):
-            f.write(str(scoreboard[i][0]) + "-" + str(scoreboard[i][1]) + "\n")
+        for k in range(len(new_scoreboard)):
+            f.write(str(new_scoreboard[k][0]) + "-" + str(new_scoreboard[k][1]) + "\n")
 
         f.close()
 
-    return scoreboard
+    return new_scoreboard
 
 
-def save_worm(box_x, box_y, worm_locations):
-    if (box_x - 2) % 22 == 0 and (box_y - 2) % 22 == 0 and [box_x, box_y, 20, 20] not in worm_locations:
-        worm_locations.append([box_x, box_y, 20, 20])
-        if len(worm_locations) > 1:
-            if worm_locations[-2][0] > box_x:
-                last_key = "L"
-            elif worm_locations[-2][0] < box_x:
-                last_key = "R"
-            elif worm_locations[-2][1] > box_y:
-                last_key = "U"
-            elif worm_locations[-2][1] < box_y:
-                last_key = "D"
+def save_worm(head_loc_x, head_loc_y, locations):
+    if (head_loc_x - 2) % 22 == 0 and (head_loc_y - 2) % 22 == 0 and [head_loc_x, head_loc_y, 20, 20] not in locations:
+        locations.append([head_loc_x, head_loc_y, 20, 20])
+        if len(locations) > 1:
+            if locations[-2][0] > head_loc_x:
+                new_last_key = "L"
+                return locations, new_last_key
+            elif locations[-2][0] < head_loc_x:
+                new_last_key = "R"
+                return locations, new_last_key
+            elif locations[-2][1] > head_loc_y:
+                new_last_key = "U"
+                return locations, new_last_key
+            elif locations[-2][1] < head_loc_y:
+                new_last_key = "D"
+                return locations, new_last_key
         else:
-            last_key = "R"
-    return worm_locations, last_key
+            new_last_key = "R"
+            return locations, new_last_key
 
 
 def load_scores_online(files):
-    scoreboards = []
-    urlstart = 'http://kodu.ut.ee/~a50871/Snake/'
+    new_scoreboards = []
+    url_start = 'http://kodu.ut.ee/~a50871/Snake/'
     for board in files:
-        data = urllib.request.urlopen(urlstart + board).read()
-        mystr = data.decode("utf-8")
-        mystr = mystr.strip()
-        if mystr != "":
-            scoreboard = mystr.split('\n')
-            for i in range(len(scoreboard)):
-                score = int(scoreboard[i].strip().split("-")[0])
-                name = scoreboard[i].strip().split("-")[1]
-                scoreboard[i] = [[], []]
-                scoreboard[i][0] = score
-                scoreboard[i][1] = name
-            scoreboard = sorted(scoreboard, key=itemgetter(0))
-            scoreboards.append(scoreboard)
+        data = urllib.request.urlopen(url_start + board).read()
+        raw_data = data.decode("utf-8")
+        raw_data = raw_data.strip()
+        if raw_data != "":
+            new_scoreboard = raw_data.split('\n')
+            for k in range(len(new_scoreboard)):
+                score = int(new_scoreboard[k].strip().split("-")[0])
+                name = new_scoreboard[k].strip().split("-")[1]
+                new_scoreboard[k] = [[], []]
+                new_scoreboard[k][0] = score
+                new_scoreboard[k][1] = name
+            new_scoreboard = sorted(new_scoreboard, key=itemgetter(0))
+            new_scoreboards.append(new_scoreboard)
         else:
-            scoreboard = []
-            scoreboards.append(scoreboard)
-    return scoreboards
+            new_scoreboard = []
+            new_scoreboards.append(new_scoreboard)
+    return new_scoreboards
 
 
 def load_scores_local(files):
-    scoreboards = []
+    new_scoreboards = []
     for board in files:
 
         if os.path.exists(board):
             f = open(board)
-            scoreboard = f.readlines()
-            for i in range(len(scoreboard)):
-                score = int(scoreboard[i].strip().split("-")[0])
-                name = scoreboard[i].strip().split("-")[1]
-                scoreboard[i] = [[], []]
-                scoreboard[i][0] = score
-                scoreboard[i][1] = name
-            scoreboard = sorted(scoreboard, key=itemgetter(0))
-            scoreboards.append(scoreboard)
+            new_scoreboard = f.readlines()
+            for k in range(len(new_scoreboard)):
+                score = int(new_scoreboard[k].strip().split("-")[0])
+                name = new_scoreboard[k].strip().split("-")[1]
+                new_scoreboard[k] = [[], []]
+                new_scoreboard[k][0] = score
+                new_scoreboard[k][1] = name
+            new_scoreboard = sorted(new_scoreboard, key=itemgetter(0))
+            new_scoreboards.append(new_scoreboard)
             f.close()
         else:
-            scoreboard = []
-            scoreboards.append(scoreboard)
-    return scoreboards
+            new_scoreboard = []
+            new_scoreboards.append(new_scoreboard)
+    return new_scoreboards
 
 
-def change_speed(speed, dir):
+def change_speed(current_speed, arrow_dir):
     speed_texts = ["<- [Sonic]   Fast   Normal   Slow   Captain Slow ->",
                    "<- Sonic   [Fast]   Normal   Slow   Captain Slow ->",
                    "<- Sonic   Fast   [Normal]   Slow   Captain Slow ->",
                    "<- Sonic   Fast   Normal   [Slow]   Captain Slow ->",
                    "<- Sonic   Fast   Normal   Slow   [Captain Slow] ->"]
-    if dir == 1:
-        if speed != speeds[4]:
-            current_speed = speeds.index(speed)
-            return speed_texts[current_speed + 1], speeds[current_speed + 1], scoreboards[current_speed + 1]
+    if arrow_dir == 1:
+        if current_speed != speeds[4]:
+            current_speed_id = speeds.index(current_speed)
+            return speed_texts[current_speed_id + 1], speeds[current_speed_id + 1], scoreboards[current_speed_id + 1]
         else:
             return speed_texts[0], speeds[0], scoreboards[0]
-    elif dir == -1:
-        if speed != speeds[0]:
-            current_speed = speeds.index(speed)
-            return speed_texts[current_speed - 1], speeds[current_speed - 1], scoreboards[current_speed - 1]
+    elif arrow_dir == -1:
+        if current_speed != speeds[0]:
+            current_speed_id = speeds.index(current_speed)
+            return speed_texts[current_speed_id - 1], speeds[current_speed_id - 1], scoreboards[current_speed_id - 1]
         else:
             return speed_texts[4], speeds[4], scoreboards[4]
 
 
-def rainbow_colors(i):
-    red_tail_color = sin(0.05 * i + 0) * 127 + 128
-    green_tail_color = sin(0.05 * i + 2) * 127 + 128
-    blue_tail_color = sin(0.05 * i + 4) * 127 + 128
+def rainbow_colors(l):
+    red_tail_color = sin(0.05 * l + 0) * 127 + 128
+    green_tail_color = sin(0.05 * l + 2) * 127 + 128
+    blue_tail_color = sin(0.05 * l + 4) * 127 + 128
     return red_tail_color, green_tail_color, blue_tail_color
 
 
-def draw_worm(worm_locations):
-    for i in range(len(worm_locations)):
-        if i == len(worm_locations) - 1:
+def draw_worm(locations):
+    for k in range(len(locations)):
+        if k == len(locations) - 1:
             if rainbow_mode:
-                pygame.draw.rect(gameDisplay, rainbow_colors(i), worm_locations[i])
+                pygame.draw.rect(gameDisplay, rainbow_colors(k), locations[k])
             else:
-                pygame.draw.rect(gameDisplay, blue, worm_locations[i])
+                pygame.draw.rect(gameDisplay, blue, locations[k])
         else:
             if rainbow_mode:
-                pygame.draw.rect(gameDisplay, rainbow_colors(i), worm_locations[i])
+                pygame.draw.rect(gameDisplay, rainbow_colors(k), locations[k])
             else:
-                tail_color = + (len(worm_locations) - i)
-                pygame.draw.rect(gameDisplay, (tail_color, tail_color, tail_color), worm_locations[i])
+                tail_color = + (len(locations) - k)
+                pygame.draw.rect(gameDisplay, (tail_color, tail_color, tail_color), locations[k])
 
 
 # PRE_SET_VARIABLES=====================================================================================================
@@ -524,8 +530,8 @@ while not gameExit:  # Game loop
                 network_status = False
                 scoreboard = load_scores_local(["save/scoreboard" + str(speed) + ".txt"])[0]
             scoreboard = save_score(worm_length - 2, scoreboard, speed, txtbx.get_value())
-            if worm_length - 2 < scoreboard[0][
-                0] or worm_length - 2 < 4:  # If didn't get on a scoreboard or length is less than 4
+            # If didn't get on a scoreboard or length is less than 4
+            if worm_length - 2 < scoreboard[0][0] or worm_length - 2 < 4:
                 if sound_on:
                     laugh.play()
             continue
@@ -542,8 +548,8 @@ while not gameExit:  # Game loop
                 network_status = False
                 scoreboard = load_scores_local(["save/scoreboard" + str(speed) + ".txt"])[0]
             scoreboard = save_score(worm_length - 2, scoreboard, speed, txtbx.get_value())
-            if worm_length - 2 < scoreboard[0][
-                0] or worm_length - 2 < 4:  # If didn't get on a scoreboard or length is less than 4
+            # If didn't get on a scoreboard or length is less than 4
+            if worm_length - 2 < scoreboard[0][0] or worm_length - 2 < 4:
                 if sound_on:
                     laugh.play()
             continue
