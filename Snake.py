@@ -1,14 +1,17 @@
 __author__ = 'Risto Pärnapuu'
 __version__ = "1.0"
+
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
-import pygame.display, eztext, os.path
-from random import randint
-from math import *
-from operator import itemgetter
+
+import pygame.display
+import eztext
 import os
 import urllib.request
 import urllib.parse
+from random import randint
+from math import *
+from operator import itemgetter
 
 # Colors
 gray = (104, 104, 104)
