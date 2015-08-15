@@ -34,8 +34,8 @@ gameDisplay = pygame.display.set_mode((width, length))
 pygame.display.set_caption("Snake ")
 
 # Sound effects
-laugh = pygame.mixer.Sound('laugh1.wav')
-eatfood = pygame.mixer.Sound('food.wav')
+laugh = pygame.mixer.Sound('sound/laugh1.wav')
+eatfood = pygame.mixer.Sound('sound/food.wav')
 
 clock = pygame.time.Clock()
 
