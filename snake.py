@@ -37,9 +37,10 @@ pygame.display.set_icon(icon)
 
 # Sound effects
 laugh = pygame.mixer.Sound('sound/laugh1.wav')
-eatfood = pygame.mixer.Sound('sound/food.wav')
+eat_food = pygame.mixer.Sound('sound/food.wav')
 
 clock = pygame.time.Clock()
+
 
 # FUNCTIONS=============================================================================================================
 def check_connectivity(reference):
@@ -382,14 +383,14 @@ while not game_exit:  # Game loop
 
     # Home screen setup
     if not game_started:
-        # Joonistan sinad
+        # Draw walls
         for j in range(len(walls)):
             pygame.draw.rect(gameDisplay, gray, walls[j])
-        # Joonistan läbipaistva kasti üle terve akna
+        # Draw transparent box
         rect = pygame.Surface((width, length), pygame.SRCALPHA, 32)
         rect.fill(light_gray)
         gameDisplay.blit(rect, [0, 0])
-        # Kuvan vajaliku teksti ekraanile
+        # Show necessary text
         txtbx.draw(gameDisplay)  # Player name
 
         status_text = "Online (F2)" if network_status else "Offline (F2)"
@@ -402,10 +403,8 @@ while not game_exit:  # Game loop
         player_text = pygame.font.SysFont("Verdana", 10).render("Change name (F1): " + str(txtbx.get_value()), True,
                                                                 gray)
 
-        worm_length = game_start_text.get_height() + \
-                      author_text.get_height() + \
-                      replay_text.get_height() + \
-                      speed_text.get_height()
+        worm_length = game_start_text.get_height() + author_text.get_height() + replay_text.get_height() + speed_text.\
+            get_height()
         gameDisplay.blit(game_mode_text, (width // 2 - game_mode_text.get_width() // 2 + 95,
                                           length // 2 - worm_length // 2 + 25))
         gameDisplay.blit(game_start_text, (width // 2 - game_start_text.get_width() // 2,
@@ -461,7 +460,7 @@ while not game_exit:  # Game loop
         gameDisplay.blit(high_scores_text, (
             width // 2 - high_scores_text.get_width() // 2, length // 2 - high_scores_text.get_height() // 2 - 15))
 
-        # Show leaderboard
+        # Show high scores
         a = 20
         for i in range(len(scoreboard)):
             if i == 0 or i == 1 or i == 2:
@@ -509,8 +508,8 @@ while not game_exit:  # Game loop
     if abs(forward_x) >= 10:
         box_x += 22 * abs(forward_x) / forward_x
         forward_x, forward_y = 0, 0
-        if not (increase_x == 0 and increase_y == 0) and (
-                        [box_x, box_y, 20, 20] in worm_locations or [box_x, box_y, 20, 20] in walls):
+        if not (increase_x == 0 and increase_y == 0) and \
+                ([box_x, box_y, 20, 20] in worm_locations or [box_x, box_y, 20, 20] in walls):
             game_over = True
             if network_status and check_connectivity('http://www.google.com/'):
                 scoreboard = load_scores_online(["save/scoreboard" + str(speed) + ".txt"])[0]
@@ -527,8 +526,8 @@ while not game_exit:  # Game loop
     elif abs(forward_y) >= 10:
         box_y += 22 * abs(forward_y) / forward_y
         forward_x, forward_y = 0, 0
-        if not (increase_x == 0 and increase_y == 0) and (
-                        [box_x, box_y, 20, 20] in worm_locations or [box_x, box_y, 20, 20] in walls):
+        if not (increase_x == 0 and increase_y == 0) and \
+                ([box_x, box_y, 20, 20] in worm_locations or [box_x, box_y, 20, 20] in walls):
             game_over = True
             if network_status and check_connectivity('http://www.google.com/'):
                 scoreboard = load_scores_online(["save/scoreboard" + str(speed) + ".txt"])[0]
@@ -558,7 +557,7 @@ while not game_exit:  # Game loop
 
     # If snake ate the food
     if food_square == [box_x, box_y, 20, 20] and not (len(worm_locations) == playable_squares_y * playable_squares_x):
-        eatfood.play()
+        eat_food.play()
         if extra_food:
             worm_length += 3
         else:
