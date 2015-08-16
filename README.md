@@ -1,13 +1,6 @@
 # SimplisticSnake
 
-
-
-![alt tag](http://s1.postimg.org/qhq3wj2dr/snake_menu_online.png)
-![alt tag](http://s2.postimg.org/9ybuok6rt/NDCJt_WQ.jpg)
-![alt tag](http://s30.postimg.org/zc33j4jjl/n_IEbn_TF.jpg)
-![alt tag](http://s21.postimg.org/48yvj9qc7/Ke_PIth_X.png)
-
-###Download [SnakeSetup.exe](http://tinyurl.com/pktxoql "Snake setup file")
+####Download [SnakeSetup.exe](http://tinyurl.com/pktxoql "Snake setup file")
 
 ##Requirements
 
