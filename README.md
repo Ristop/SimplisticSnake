@@ -13,14 +13,14 @@
 
 ##Keymap
 
-###Menu
+#####Menu
   * F1 - Name field active/inactive
   * F2 - Online/offline mode
   * ENTER - Play
   * V - mute/unmute laugh
   * LEFT & RIGHT KEY - Change speed
 
-###Playing
+#####Playing
   * W, UP KEY - Change worm direction (up)
   * S, DOWN KEY - Change worm direction (down)
   * A, LEFT KEY - Change worm direction (left)
