@@ -27,4 +27,4 @@ Keymap
     * D, RIGHT KEY - Change worm direction (right)
     * TAB - Rainbow mode
     * V - mute/unmute laugh
- * SPACE - Pause/unpause
+    * SPACE - Pause/unpause
