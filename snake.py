@@ -41,20 +41,6 @@ eatfood = pygame.mixer.Sound('sound/food.wav')
 
 clock = pygame.time.Clock()
 
-
-# CODE TO CLEAR SCOREBOARDS=============================================================================================
-# url1 = ('http://kodu.ut.ee/~a50871/Snake/upload.php?table=save/scoreboard1.txt&data=')
-# url2 = ('http://kodu.ut.ee/~a50871/Snake/upload.php?table=save/scoreboard2.5.txt&data=')
-# url3 = ('http://kodu.ut.ee/~a50871/Snake/upload.php?table=save/scoreboard2.txt&data=')
-# url4 = ('http://kodu.ut.ee/~a50871/Snake/upload.php?table=save/scoreboard5.txt&data=')
-# url5 = ('http://kodu.ut.ee/~a50871/Snake/upload.php?table=save/scoreboard10.txt&data=')
-# urllib.request.urlopen(url1)
-# urllib.request.urlopen(url2)
-# urllib.request.urlopen(url3)
-# urllib.request.urlopen(url4)
-# urllib.request.urlopen(url5)
-
-
 # FUNCTIONS=============================================================================================================
 def check_connectivity(reference):
     try:
