@@ -2,6 +2,8 @@
 
 ####Download [SnakeSetup.exe](http://tinyurl.com/pktxoql "Snake setup file")
 
+![alt tag](http://s16.postimg.org/rflvw3745/LRFo_Tbe.png)
+
 ##Requirements
 
  * Python 3.4
