@@ -38,6 +38,7 @@ pygame.display.set_icon(icon)
 # Sound effects
 laugh = pygame.mixer.Sound('sound/laugh1.wav')
 eat_food = pygame.mixer.Sound('sound/food.wav')
+eat_food2 = pygame.mixer.Sound('sound/food2.wav')
 
 clock = pygame.time.Clock()
 
@@ -557,10 +558,12 @@ while not game_exit:  # Game loop
 
     # If snake ate the food
     if food_square == [box_x, box_y, 20, 20] and not (len(worm_locations) == playable_squares_y * playable_squares_x):
-        eat_food.play()
+
         if extra_food:
+            eat_food2.play()
             worm_length += 3
         else:
+            eat_food.play()
             worm_length += 1
         food_set = False
 
