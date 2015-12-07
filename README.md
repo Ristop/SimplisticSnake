@@ -1,6 +1,6 @@
 # SimplisticSnake
 
-####Download [SnakeSetup.exe](http://tinyurl.com/pktxoql "Snake setup file")
+####Download [SnakeSetup.exe](http://tinyurl.com/pktxoql "Snake setup file")  (This ver is not up to date)
 
 ![alt tag](http://s16.postimg.org/rflvw3745/LRFo_Tbe.png)
 
